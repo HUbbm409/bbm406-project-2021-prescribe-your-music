@@ -45,7 +45,7 @@ def read_midi(file):
 
 
 # specify the path
-path = 'train/'
+path = 'train_subset/'
 
 # read all the filenames
 files = [i for i in os.listdir(path) if i.endswith(".mid")]
@@ -93,6 +93,7 @@ y = []
 for note_ in new_music:
     for i in range(0, len(note_) - no_of_timesteps, 1):
         # preparing input and output sequences
+
         input_ = note_[i:i + no_of_timesteps]
         output = note_[i + no_of_timesteps]
 
@@ -102,6 +103,7 @@ for note_ in new_music:
 x = np.array(x)
 y = np.array(y)
 
+# this contains the unique notes after the eliminating the weak notes in terms of occurrence number.
 unique_x = list(set(x.ravel()))
 x_note_to_int = dict((note_, number) for number, note_ in enumerate(unique_x))
 
@@ -121,19 +123,6 @@ y_note_to_int = dict((note_, number) for number, note_ in enumerate(unique_y))
 y_seq = np.array([y_note_to_int[i] for i in y])
 
 x_tr, x_val, y_tr, y_val = train_test_split(x_seq, y_seq, test_size=0.2, random_state=0)
-
-
-def lstm():
-    model = Sequential()
-    model.add(LSTM(128, return_sequences=True))
-    model.add(LSTM(128))
-    model.add(Dense(256))
-    model.add(Activation('relu'))
-    model.add(Dense(n_vocab))
-    model.add(Activation('softmax'))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam')
-    return model
-
 
 K.clear_session()
 model = Sequential()
