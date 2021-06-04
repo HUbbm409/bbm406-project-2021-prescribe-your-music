@@ -24,7 +24,7 @@ def read_midi(file):
 
     # Looping over all the instruments
     for part in s2.parts:
-
+        print(str(part))
         # select elements of only piano
         if 'Piano' in str(part):
 
@@ -165,8 +165,10 @@ ind = np.random.randint(0, len(x_val) - 1)
 
 random_music = x_val[ind]
 
+
+length_of_the_composition = 10
 predictions = []
-for i in range(10):
+for i in range(length_of_the_composition):
     random_music = random_music.reshape(1, no_of_timesteps)
 
     prob = model.predict(random_music)[0]
